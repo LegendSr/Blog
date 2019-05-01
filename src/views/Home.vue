@@ -1,18 +1,35 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <page>
+      
+    </page>
   </div>
 </template>
+<style lang="scss">
+.home{
+  width: 100%;
+}
+</style>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import page from "@/components/page.vue"
+import moment from "moment"
 export default {
   name: 'home',
   components: {
-    HelloWorld
+    page
+  },
+  data(){
+    return {
+      list:[{
+        title:'《青春猪头少年不会梦到兔女郎学姐》圣地巡礼',
+        date:moment(),
+        read:1390,
+        wordNumber:1230,
+        type:"日记本",
+        introduce:""
+      }]
+    }
   }
 }
 </script>
