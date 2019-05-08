@@ -3,11 +3,16 @@
     <div class="header">
       <div class="frame">
         <ul>
-          <li v-for="item in list" :key="item.title">
+          <li v-for="item in list" @click='tourl(item)' :key="item.title">
             <img v-if="item.imgSrc" :src="item.imgSrc">
             {{item.title}}
             <ul v-if="item.chilren" style="display:none">
-                <li v-for="item2 in item.chilren" :key='item2.title'>{{item2.title}}</li>
+                <li v-for="item2 in item.chilren" @click='tourl(item2)' :key='item2.title'>
+                  <a v-if="item2.url.indexOf('http')>=0" :href="item2.url" target="_blank">
+                  {{item2.title}}
+                  </a>
+                  <span v-else>{{item2.title}}</span>
+                </li>
             </ul>
           </li>
         </ul>
@@ -15,24 +20,44 @@
     </div>
     <div class="banner">
         <img src="@/assets/banner.jpg" alt="">
+        <div>Hi,Welcome to My Blog</div>
     </div>
-    <slot></slot>
-    <div class="footer"></div>
+    <div style="margin-bottom: 100px">
+      <slot>
+      </slot>
+    </div>
+    <div class="footer">
+        <p>博客已萌萌哒运行<span id="since">{{dateTime}}</span><span class="my-face">(●'◡'●)ﾉ♥</span></p>
+        <p>© <span itemprop="copyrightYear">2019</span> 鲁ICP备16000184号.</p>
+        <p>Made with <i class="fa fa-heart throb" style="color:#d43f57"></i> by <span class="author" itemprop="copyrightHolder">Sr</span>. </p>
+    </div>
     <canvas class="fireworks" ></canvas>
   </div>
 </template>
 <style lang="scss">
 .page {
-    width: 100%;
-    .banner{
-        font-size: 0;
-        img{
-            margin-top: -40px;
-        }
-    }
-    .header {
-        position: relative;
-        z-index: 10;
+  width: 100%;
+  .banner{
+      position: relative;
+      font-size: 0;
+      img{
+          margin-top: -40px;
+      }
+      div{
+        font-size:96px;
+        font-family:'blog';
+        text-align: center;
+        position: absolute;
+        width: 100%;
+        top:50%;
+        background: url('../assets/colorbg.png') no-repeat 0 0 / 100%;
+        color: transparent;
+        -webkit-background-clip: text;
+      }
+  }
+  .header {
+    position: relative;
+    z-index: 10;
     width: 100%;
     height: 40px;
     line-height: 40px;
@@ -62,12 +87,25 @@
         li{
             font-size: 16px;
             text-align: center;
+            a{
+              color: #fff
+            }
         }
     }
     .frame {
       max-width: 1200px;
       margin: 0 auto;
+      ul{
+        cursor: pointer;
+      }
     }
+  }
+  .footer{
+    text-align: center;
+    background: #232323;
+    color:#888;
+    line-height: 1.5;
+    padding: 30px 0;
   }
 }
 .fireworks{
@@ -82,20 +120,39 @@
 import { request } from "http";
 import $ from "jquery";
 import anime from 'animejs';
-
+function setDateTime(){
+  var d1 = new Date("2019/05/07");
+  var d2 = new Date()
+  var date = (parseInt(d2 - d1) / 1000)>>0
+  var day = date/60/60/24>>0
+  var hour = (date/60/60>>0)%24
+  var minute = (date/60>>0)%60
+  var seconds = (date)%60
+  if(day<10) day="0"+day
+  if(hour<10) hour="0"+hour
+  if(minute<10) minute="0"+minute
+  if(seconds<10) seconds="0"+seconds
+  return day+"天"+hour+"时"+minute+"分"+seconds+"秒"
+}
 export default {
   name: "page",
   components: {},
   data() {
+    // var d1 = new Date("1557304090725");
+    setInterval(() => {
+      this.dateTime=setDateTime()
+    }, 1000);
     return {
+      dateTime:setDateTime(),
       list: [
         {
           title: "首页",
-          url: "home",
+          url: "/",
           imgSrc: require("@/assets/food-cake.png")
         },
         {
           title: "抓到我",
+          url: "",
           imgSrc: require("@/assets/food-pistachio.png"),
           chilren: [
             {
@@ -120,7 +177,6 @@ export default {
   created(){
       $(()=>{
           $(".header div>ul li").hover(function(){
-              console.log() 
               $(this).find("ul").stop(true,false).slideDown();
             //   $(this).find("ul").slideDown()
           },function(){
@@ -130,6 +186,12 @@ export default {
       })
   },
   methods:{
+      tourl(item){
+        console.log(item)
+        if(item.chilren) return
+        if(item.url && item.url.indexOf("http")<0)
+        this.$router.push(item.url)
+      },
       loadAnm(){
         function updateCoords(e) {
             pointerX = (e.clientX || e.touches[0].clientX) - canvasEl.getBoundingClientRect().left,
