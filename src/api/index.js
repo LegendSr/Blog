@@ -2,6 +2,7 @@
 import { Message } from 'element-ui';//element-ui消息提示
 import axios from 'axios'
 
+// var root = 'http://api.yxlqwq.com/api/v1/'
 var root = '/api'
 // 自定义判断元素类型JS
 function toType (obj) {

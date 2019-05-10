@@ -56,9 +56,10 @@
       }
   }
   .header {
-    position: relative;
+    position: fixed;
     z-index: 10;
     width: 100%;
+    top: 0;
     height: 40px;
     line-height: 40px;
     background: rgba(0, 0, 0, 0.5);
@@ -120,6 +121,7 @@
 import { request } from "http";
 import $ from "jquery";
 import anime from 'animejs';
+import { constants } from 'crypto';
 function setDateTime(){
   var d1 = new Date("2019/05/07");
   var d2 = new Date()
@@ -142,6 +144,9 @@ export default {
     setInterval(() => {
       this.dateTime=setDateTime()
     }, 1000);
+    var t1 = 0;
+    var t2 = 0;
+    var timer = null;
     return {
       dateTime:setDateTime(),
       list: [
