@@ -52,8 +52,8 @@ export default {
         this.$api.get('Blog',{
             id:id
         }).then((data)=>{
-            console.log(data)
             this.blogList=data.msg
+            document.title=data.msg[0].title
             localStorage.Blog=JSON.stringify(this.blogList)
             this.$message({message:'加载成功！',type: 'success'});
         })

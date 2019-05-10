@@ -202,6 +202,7 @@ export default {
     }
   },
   mounted(){
+    document.title='博客'
     this.loadBlogList()
   },
   methods:{
