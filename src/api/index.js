@@ -2,8 +2,8 @@
 import { Message } from 'element-ui';//element-ui消息提示
 import axios from 'axios'
 
-// var root = 'http://api.yxlqwq.com/api/v1/'
-var root = '/api'
+var root = 'http://api.yxlqwq.com/api/v1/'
+// var root = '/api'
 // 自定义判断元素类型JS
 function toType (obj) {
   return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
